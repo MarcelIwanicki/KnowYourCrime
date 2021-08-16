@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map_nav"
+    app:startDestination="@id/crimeMapFragment">
+
+    <fragment
+        android:id="@+id/crimeMapFragment"
+        android:name="com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.view.CrimeMapFragment"
+        android:label="CrimeMapFragment">
+        <action
+            android:id="@+id/action_crimeMapFragment_to_screenDetailsFragment"
+            app:destination="@id/screenDetailsFragment" />
+        <action
+            android:id="@+id/action_crimeMapFragment_to_settingsScreenFragment"
+            app:destination="@id/settingsScreenFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+    <dialog
+        android:id="@+id/screenDetailsFragment"
+        android:name="com.iwanickimarcel.knowyourcrime.uk.feature.detailsscreen.view.ScreenDetailsFragment"
+        android:label="fragment_screen_details"
+        tools:layout="@layout/fragment_screen_details" >
+        <argument
+            android:name="crimeDetails"
+            app:argType="com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItem" />
+    </dialog>
+    <fragment
+        android:id="@+id/settingsScreenFragment"
+        android:name="com.iwanickimarcel.knowyourcrime.uk.feature.settings.view.SettingsScreenFragment"
+        android:label="SettingsScreenFragment" >
+        <action
+            android:id="@+id/action_settingsScreenFragment_to_crimeMapFragment"
+            app:destination="@id/crimeMapFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
+        <action
+            android:id="@+id/action_settingsScreenFragment_to_aboutUsFragment"
+            app:destination="@id/aboutUsFragment"
+            app:enterAnim="@anim/from_right"
+            app:exitAnim="@anim/to_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.iwanickimarcel.knowyourcrime.uk.feature.settings.view.AboutUsFragment"
+        android:label="AboutUsFragment" >
+        <action
+            android:id="@+id/action_aboutUsFragment_to_settingsScreenFragment"
+            app:destination="@id/settingsScreenFragment"
+            app:enterAnim="@anim/from_left"
+            app:exitAnim="@anim/to_right" />
+    </fragment>
+</navigation>

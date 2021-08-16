@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/text_view_setting"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:text="@string/settings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_change_date"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:text="@string/change_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_setting"
+            app:layout_goneMarginTop="@dimen/margin_top_32" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_text_date_from"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:layout_marginEnd="@dimen/edit_text_margin_top"
+            android:hint="@string/date"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/max_length_edit_text"
+            app:layout_constraintEnd_toStartOf="@+id/checkbox_up_to_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_change_date">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="date"
+                android:maxLength="@integer/max_length_edit_text"
+                android:text="@string/sample_text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkbox_up_to_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_end_16"
+            android:checked="true"
+            android:text="@string/up_to_date"
+            app:layout_constraintBottom_toBottomOf="@+id/edit_text_date_from"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/edit_text_date_from"
+            app:layout_constraintTop_toTopOf="@+id/edit_text_date_from" />
+
+        <View
+            android:id="@+id/view_settings_screen"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_height_2"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:background="@color/light_gray_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_text_date_from" />
+
+        <TextView
+            android:id="@+id/text_view_about_us"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:text="@string/about_us"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_settings_screen" />
+
+        <Button
+            android:id="@+id/button_about_us"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:drawableEnd="@drawable/ic_baseline_arrow_forward_24"
+            android:text="@string/go_to_about_us"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_about_us" />
+
+        <View
+            android:id="@+id/view_settings_screen2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_height_2"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:background="@color/light_gray_3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_about_us" />
+
+        <TextView
+            android:id="@+id/text_view_count_crimes"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:text="@string/count_crimes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_settings_screen2" />
+
+        <Button
+            android:id="@+id/button_count_crimes"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_16"
+            android:layout_marginTop="@dimen/margin_top_16"
+            android:drawableEnd="@drawable/ic_baseline_arrow_upward_24"
+            android:text="@string/go_to_counted_crimes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_count_crimes" />
+
+        <Button
+            android:id="@+id/button_back"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/layout_margin_32"
+            android:text="@string/apply_and_back"
+            app:icon="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/CoordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/bottom_sheet_settings"
+                layout="@layout/bottom_sheet_settings" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,73 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    buildFeatures {
+        viewBinding = true
+        dataBinding = true
+    }
+
+    defaultConfig {
+        applicationId "com.iwanickimarcel.knowyourcrime"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation projectDependencies.appcompat
+    implementation projectDependencies.constraintlayout
+    implementation projectDependencies.coroutines_core
+    implementation projectDependencies.coroutines_android
+    kapt projectDependencies.databinding
+    implementation projectDependencies.google_material
+    implementation projectDependencies.google_location
+    implementation projectDependencies.google_services_maps
+    implementation projectDependencies.google_services_location
+    implementation projectDependencies.google_maps_utils
+    implementation projectDependencies.gson
+    implementation projectDependencies.kotlin
+    implementation projectDependencies.kotlin_preference
+    implementation projectDependencies.koin
+    implementation projectDependencies.koin_viewmodel
+    implementation projectDependencies.ktx
+    implementation projectDependencies.legacy_support
+    implementation projectDependencies.navigation_fragment_ktx
+    implementation projectDependencies.navigation_ui_ktx
+    implementation projectDependencies.retrofit
+    implementation projectDependencies.retrofit_gson
+    implementation projectDependencies.recyclerview
+
+    testImplementation projectDependencies.junit
+    androidTestImplementation projectDependencies.test_ext
+    androidTestImplementation projectDependencies.test_espresso
+}

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ScreenDetailsFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottomSheetDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_horizontal_16"
+            android:paddingBottom="@dimen/padding_bottom_16"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="@dimen/dp_0"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.4" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.05" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_90"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.95" />
+
+            <View
+                android:id="@+id/view_up_bottom_bar"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/layout_height_2"
+                android:layout_marginTop="@dimen/margin_top_4"
+                android:background="@drawable/grey_bar_view_rounded"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end_detail"
+                app:layout_constraintStart_toStartOf="@id/guideline_start_detail"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/place_icon"
+                android:layout_width="@dimen/place_icon_width"
+                android:layout_height="@dimen/place_icon_height"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/place_icon_desc"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_place_24" />
+
+            <TextView
+                android:id="@+id/text_view_latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_24"
+                android:text="@string/sample_text"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintBottom_toBottomOf="@+id/place_icon"
+                app:layout_constraintStart_toEndOf="@+id/place_icon"
+                app:layout_constraintTop_toTopOf="@+id/place_icon" />
+
+            <TextView
+                android:id="@+id/text_view_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_24"
+                android:text="@string/sample_text"
+                android:textAlignment="center"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintBottom_toBottomOf="@+id/text_view_latitude"
+                app:layout_constraintStart_toEndOf="@+id/text_view_latitude"
+                app:layout_constraintTop_toTopOf="@+id/text_view_latitude" />
+
+            <View
+                android:id="@+id/view_separator_details_one"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/layout_height_1"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:background="@color/light_gray_2"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_90"
+                app:layout_constraintStart_toStartOf="@+id/guideline_10"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_latitude" />
+
+            <include
+                android:id="@+id/crime_row"
+                layout="@layout/bottom_sheet_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_separator_details_one" />
+
+            <TextView
+                android:id="@+id/text_view_where"
+                style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:text="@string/where"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/crime_row" />
+
+            <TextView
+                android:id="@+id/text_view_where_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:text="@string/sample_text"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_where" />
+
+            <View
+                android:id="@+id/view_separator_details_three"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/layout_height_1"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:background="@color/light_gray_2"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_90"
+                app:layout_constraintStart_toStartOf="@+id/guideline_10"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_where_content" />
+
+            <TextView
+                android:id="@+id/text_view_outcome_status"
+                style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:text="@string/outcome_status"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_separator_details_three" />
+
+            <TextView
+                android:id="@+id/text_view_outcome_status_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:text="@string/unable_to_prosecute_suspect"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_outcome_status" />
+
+            <View
+                android:id="@+id/view_separator_details_four"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/layout_height_1"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:background="@color/light_gray_2"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_90"
+                app:layout_constraintStart_toStartOf="@+id/guideline_10"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_outcome_status_content" />
+
+            <TextView
+                android:id="@+id/text_view_id"
+                style="@style/TextAppearance.MdcTypographyStyles.Subtitle1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:layout_marginTop="@dimen/margin_top_16"
+                android:text="@string/id"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_separator_details_four" />
+
+            <TextView
+                android:id="@+id/text_view_id_content"
+                style="@style/TextAppearance.MdcTypographyStyles.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_16"
+                android:text="@string/sample_text"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_id" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

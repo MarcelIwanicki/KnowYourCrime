@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/search_view"
+            style="@style/TextAppearance.MdcTypographyStyles.Body2"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_marginStart="@dimen/search_view_margin"
+            android:layout_marginTop="@dimen/search_view_margin_top"
+            android:background="@drawable/bg_white_rounded"
+            android:elevation="@dimen/elevation_value"
+            android:gravity="center"
+            android:paddingStart="@dimen/padding_start_16"
+            android:paddingEnd="@dimen/padding_end_16"
+            android:text="@string/know_your_crime_global_app"
+            android:textAlignment="center"
+            app:drawableStartCompat="@drawable/unitedkingdom"
+            app:layout_constraintEnd_toStartOf="@id/fab_settings"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/setting_desc"
+            app:backgroundTint="@color/light_gray_button"
+            app:borderWidth="@dimen/dp_0"
+            app:elevation="@dimen/dp_0"
+            app:layout_constraintBottom_toBottomOf="@id/search_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_view"
+            app:layout_constraintTop_toTopOf="@id/search_view"
+            app:pressedTranslationZ="@dimen/dp_0"
+            app:srcCompat="@drawable/ic_baseline_settings_24" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_current_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_horizontal_16"
+            android:contentDescription="@string/current_position"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/fab"
+            app:layout_constraintEnd_toStartOf="@id/fab"
+            app:srcCompat="@drawable/ic_baseline_person_pin_24" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <HorizontalScrollView
+            android:id="@+id/horizontal_scroll_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/horizontal_scroll_view_margin_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_view">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/search_view_margin"
+                app:singleLine="true"
+                app:singleSelection="false">
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_32"
+            android:layout_marginBottom="@dimen/margin_bottom_48"
+            android:contentDescription="@string/up_fab_desc"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/CoordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/bottom_sheet"
+                layout="@layout/bottom_sheet" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

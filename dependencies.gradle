@@ -1,0 +1,52 @@
+ext {
+    appcompat_version = '1.3.0'
+    constraintlayout_version = '2.0.4'
+    coroutines_version = '1.5.0'
+    databinding_version = '3.1.4'
+    google_material_version = '1.4.0'
+    google_services_maps_version = '17.0.1'
+    google_maps_utils_version = '2.2.3'
+    gson_version = '2.8.7'
+    junit_version = '4.13.2'
+    kotlin_version = '1.5.10'
+    kotlin_preference_version = '1.1.1'
+    koin_version = '2.1.3'
+    legacy_version = '1.0.0'
+    lifecycle_version = '2.2.0'
+    ktx_version = '1.6.0'
+    nav_version = '2.3.5'
+    retrofit_version = '2.9.0'
+    recyclerview_version = '1.2.1'
+    safeargs_version = '2.3.5'
+    test_ext_version = '1.1.3'
+    test_espresso_version = '3.4.0'
+    google_location = '18.0.0'
+
+    projectDependencies = [
+            appcompat               : "androidx.appcompat:appcompat:$appcompat_version",
+            constraintlayout        : "androidx.constraintlayout:constraintlayout:$constraintlayout_version",
+            coroutines_core         : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version",
+            coroutines_android      : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version",
+            databinding             : "com.android.databinding:compiler:$databinding_version",
+            google_material         : "com.google.android.material:material:$google_material_version",
+            google_services_maps    : "com.google.android.gms:play-services-maps:$google_services_maps_version",
+            google_services_location: "com.google.android.gms:play-services-location:$google_services_maps_version",
+            google_maps_utils       : "com.google.maps.android:android-maps-utils:$google_maps_utils_version",
+            google_location         : "com.google.android.gms:play-services-location:$google_location",
+            gson                    : "com.google.code.gson:gson:$gson_version",
+            junit                   : "junit:junit:$junit_version",
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+            kotlin_preference       : "androidx.preference:preference-ktx:$kotlin_preference_version",
+            koin                    : "org.koin:koin-android:$koin_version",
+            koin_viewmodel          : "org.koin:koin-android-viewmodel:$koin_version",
+            ktx                     : "androidx.core:core-ktx:$ktx_version",
+            legacy_support          : "androidx.legacy:legacy-support-v4:$legacy_version",
+            navigation_fragment_ktx : "androidx.navigation:navigation-fragment-ktx:$nav_version",
+            navigation_ui_ktx       : "androidx.navigation:navigation-ui-ktx:$nav_version",
+            retrofit                : "com.squareup.retrofit2:retrofit:$retrofit_version",
+            retrofit_gson           : "com.squareup.retrofit2:converter-gson:$retrofit_version",
+            recyclerview            : "androidx.recyclerview:recyclerview:$recyclerview_version",
+            test_ext                : "androidx.test.ext:junit:$junit_version",
+            test_espresso           : "androidx.test.espresso:espresso-core:$test_espresso_version"
+    ]
+}
