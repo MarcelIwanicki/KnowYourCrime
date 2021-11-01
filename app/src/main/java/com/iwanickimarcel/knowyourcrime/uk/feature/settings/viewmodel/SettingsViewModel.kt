@@ -5,8 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.Crimes
 import com.iwanickimarcel.knowyourcrime.uk.feature.splashscreen.model.CrimeCategories
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SettingsViewModel : ViewModel() {
+
+    companion object {
+        private val matchingCrimes = mapOf(
+            "violent-crime" to "violence-and-sexual-offences",
+            "criminal-damage-arson" to "criminal-damage-and-arson"
+        )
+
+        private const val DATE_FORMAT = "yyyy-MM-dd"
+        private const val MINIMUM_FILTER_YEAR = 2015
+        private const val MINIMUM_FILTER_MONTH = 12
+        private const val MINIMUM_FILTER_DAY = 1
+    }
 
     private val _countCrimesText = MutableLiveData<String>()
     val countCrimesText: LiveData<String> = _countCrimesText
@@ -14,51 +28,74 @@ class SettingsViewModel : ViewModel() {
     private val _dateValid = MutableLiveData<Boolean>()
     val dateValid: LiveData<Boolean> = _dateValid
 
-    fun countCrimes(crimeCategories: CrimeCategories, allCrimes: Crimes) {
-        val stringBuilder = StringBuilder()
-
-        val newCategories = crimeCategories.toMutableList()
-        val categoryNames = mutableListOf<String>()
-        if (newCategories != null) {
-            repeat(newCategories.size) { i ->
-                crimeCategories.get(i)?.name?.lowercase()
-                    ?.let { categoryNames.add(it.replace(" ", "-")) }
-            }
-        }
-        categoryNames.forEach { crimeCategoriesItem ->
-            var count = 0
-            if (crimeCategoriesItem != "all-crime") {
-                count = allCrimes.count { crimesItem ->
-                    crimesItem.category == crimeCategoriesItem || (crimesItem.category == "violent-crime" && crimeCategoriesItem == "violence-and-sexual-offences")
-                            || (crimesItem.category == "criminal-damage-arson" && crimeCategoriesItem == "criminal-damage-and-arson")
-                }!!
-                stringBuilder.append(
-                    "${
-                        crimeCategoriesItem.replaceFirstChar {
-                            it.uppercase()
-                        }.replace('-', ' ')
-                    } = $count \n"
-                )
-            }
-        }
-
-        _countCrimesText.value = stringBuilder.toString()
+    fun setCountCrimesText(crimeCategories: CrimeCategories, allCrimes: Crimes) {
+        val countCrimesText = getCountCrimesText(
+            crimeCategories = crimeCategories,
+            categoriesInProcessingFormat = getCategoriesInProcessingFormat(crimeCategories),
+            allCrimes = allCrimes
+        )
+        _countCrimesText.value = countCrimesText
     }
 
-    fun validateDate(dateText: String) {
-        if (dateText.length == 7 && (dateText.substring(4, 5) == "-" && (dateText.substring(0, 4)
-                .toInt() <= 2021) && (dateText.substring(0, 4)
-                .toInt() > 2015) && (dateText.substring(5, 7)
-                .toInt() < 13) && (dateText.substring(5, 7)
-                .toInt() > 0))
-        ) {
-            if (dateText.substring(0, 4).toInt() == 2021) {
-                _dateValid.value = dateText.substring(5, 7).toInt() < 6
-            } else {
-                _dateValid.value = true
-            }
-        } else {
-            _dateValid.value = false
+    private fun getCountCrimesText(
+        crimeCategories: CrimeCategories,
+        categoriesInProcessingFormat: List<String>,
+        allCrimes: Crimes
+    ) = buildString {
+        crimeCategories.forEachIndexed { index, _ ->
+            append(crimeCategories[index].name)
+            append(" = ")
+            append(countSelectedCrimes(allCrimes, categoriesInProcessingFormat[index]))
+            append("\n")
         }
     }
+
+    private fun getCategoriesInProcessingFormat(crimeCategories: CrimeCategories) =
+        crimeCategories.map {
+            it.name.lowercase().replace(" ", "-")
+        }
+
+    private fun countSelectedCrimes(allCrimes: Crimes, selectedCategory: String) = allCrimes.count {
+        it.category == selectedCategory || matchingCrimes.contains(it.category)
+    }
+
+    fun validateDate(dateText: String, dateFilteredBy: String) {
+        _dateValid.value = isDateValid(dateText, dateFilteredBy)
+    }
+
+    private fun isDateValid(dateText: String, dateFilteredBy: String) = try {
+        isDateCorrectlyParsed(dateText, dateFilteredBy)
+    } catch (exception: Exception) {
+        false
+    }
+
+    private fun isDateCorrectlyParsed(dateText: String, dateFilteredBy: String): Boolean {
+        val dateFormat = SimpleDateFormat(DATE_FORMAT, Locale.UK)
+        val date = dateFormat.parse(getDateWithSampleDay(dateText))
+        val filterDate = dateFormat.parse(getDateWithSampleDay(dateFilteredBy))
+
+        date?.let { currentDate ->
+            filterDate?.let { maxDate ->
+                if (isDateAfterMinimum(currentDate) && isDateBeforeMaximum(currentDate, maxDate)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private fun getDateWithSampleDay(dateWithYearAndMonthText: String) =
+        "$dateWithYearAndMonthText-01"
+
+    private fun isDateAfterMinimum(date: Date) =
+        date.after(
+            GregorianCalendar(
+                MINIMUM_FILTER_YEAR,
+                MINIMUM_FILTER_MONTH - 1,
+                MINIMUM_FILTER_DAY
+            ).time
+        )
+
+    private fun isDateBeforeMaximum(date: Date, maxDate: Date) =
+        date.before(maxDate)
 }

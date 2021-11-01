@@ -23,4 +23,5 @@
     <string name="go_to_counted_crimes">Go to counted crimes</string>
     <string name="change_date">Change date</string>
     <string name="know_your_crime_global_app">Know Your Crime App</string>
+    <string name="you_are_here">You are here</string>
 </resources>

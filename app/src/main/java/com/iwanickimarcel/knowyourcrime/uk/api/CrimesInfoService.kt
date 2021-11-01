@@ -20,7 +20,7 @@ class CrimesInfoService(
     private val crimesRepository: CrimesRepository
 ) {
 
-    private fun getLastUpdated(): Flow<LastUpdated> = try {
+    fun getLastUpdated(): Flow<LastUpdated> = try {
         lastUpdatedRepository.getLastUpdated()
     } catch (exception: Exception) {
         flowOf(LastUpdated(OFFLINE_LAST_UPDATED))

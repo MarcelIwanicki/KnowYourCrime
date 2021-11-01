@@ -8,14 +8,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.iwanickimarcel.knowyourcrime.databinding.FragmentSettingsScreenBinding
 import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.viewmodel.CrimeMapFragmentViewModel
 import com.iwanickimarcel.knowyourcrime.uk.feature.settings.viewmodel.SettingsViewModel
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
-
-private const val DEFAULT_DATE = "2021-05"
 
 class SettingsScreenFragment : Fragment() {
 
@@ -32,6 +30,7 @@ class SettingsScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSettingsScreenBinding.inflate(inflater, container, false)
+
         bottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetSettings.bottomSheetSettings)
 
@@ -57,7 +56,7 @@ class SettingsScreenFragment : Fragment() {
 
         crimeMapViewModel.crimeCategories.value?.let { categories ->
             crimeMapViewModel.allCrimes.value?.let { crimes ->
-                settingsViewModel.countCrimes(
+                settingsViewModel.setCountCrimesText(
                     categories,
                     crimes
                 )
@@ -77,27 +76,32 @@ class SettingsScreenFragment : Fragment() {
     }
 
     private fun setCheckBoxAndEditText() {
-        if (binding.checkboxUpToDate.isChecked) {
-            binding.editTextDateFrom.editText?.isEnabled = false
-            binding.editTextDateFrom.editText?.setText(DEFAULT_DATE)
-        } else {
-            binding.editTextDateFrom.editText?.setText(crimeMapViewModel.dateFilteredBy.value.toString())
-            binding.editTextDateFrom.editText?.isEnabled = true
+        binding.editTextDateFrom.editText?.isEnabled = !binding.checkboxUpToDate.isChecked
+
+        crimeMapViewModel.dateFilteredBy.value?.let {
+            binding.editTextDateFrom.editText?.setText(it)
         }
 
-        binding.checkboxUpToDate.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                binding.editTextDateFrom.editText?.isEnabled = false
-                binding.editTextDateFrom.editText?.setText(DEFAULT_DATE)
-            } else {
-                binding.editTextDateFrom.editText?.isEnabled = true
-            }
+        binding.checkboxUpToDate.setOnCheckedChangeListener { _, isChecked ->
+            changeDateField(isChecked)
+        }
+    }
+
+    private fun changeDateField(isChecked: Boolean) {
+        if (isChecked) {
+            binding.editTextDateFrom.editText?.isEnabled = false
+            binding.editTextDateFrom.editText?.setText(crimeMapViewModel.dateFilteredBy.value.toString())
+        } else {
+            binding.editTextDateFrom.editText?.isEnabled = true
         }
     }
 
     private fun validDateEditText() {
         binding.editTextDateFrom.editText?.doAfterTextChanged {
-            settingsViewModel.validateDate(it.toString())
+            settingsViewModel.validateDate(
+                it.toString(),
+                crimeMapViewModel.dateFilteredBy.value.toString()
+            )
         }
     }
 

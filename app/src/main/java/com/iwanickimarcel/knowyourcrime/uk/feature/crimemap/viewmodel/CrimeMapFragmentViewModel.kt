@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -54,7 +55,6 @@ class CrimeMapFragmentViewModel(
     val allCrimes: LiveData<Crimes> = _allCrimes
 
     private val _currentCameraPosition = MutableLiveData<CameraPosition>()
-    val currentCameraPosition: LiveData<CameraPosition> = _currentCameraPosition
 
     private val _currentGPSPosition = MutableLiveData<LatLng>()
     val currentGPSPosition: LiveData<LatLng> = _currentGPSPosition
@@ -66,15 +66,23 @@ class CrimeMapFragmentViewModel(
     val chipCategories: LiveData<MutableList<String>> = _chipCategories
 
     private val _checkedChipsIdsList = MutableLiveData<List<Int>>()
-    var checkedChipsIdsList: LiveData<List<Int>> = _checkedChipsIdsList
 
     private val _checkedChipsNamesList = MutableLiveData<List<String>>()
-    var checkedChipsNamesList: LiveData<List<String>> = _checkedChipsNamesList
 
     private val _dateFilteredBy = MutableLiveData<String>()
     var dateFilteredBy: LiveData<String> = _dateFilteredBy
 
     var resetView: Boolean = false
+
+    fun initDateFilter() {
+        viewModelScope.launch(Dispatchers.Main) {
+            crimesInfoService.getLastUpdated().collect {
+                if (_dateFilteredBy.value == null) {
+                    _dateFilteredBy.value = it.date.substring(0, 7)
+                }
+            }
+        }
+    }
 
     fun handleOnClusterItemClick(
         googleMap: GoogleMap,
@@ -222,7 +230,7 @@ class CrimeMapFragmentViewModel(
         _currentGPSPosition.value = LatLng(latitude, longitude)
     }
 
-    fun updateCurrentCameraPosition(
+    private fun updateCurrentCameraPosition(
         latLngBounds: LatLngBounds,
         latitude: Double,
         longitude: Double
@@ -333,7 +341,7 @@ class CrimeMapFragmentViewModel(
         }
     }
 
-    fun getCrimesItemById(id: Int): CrimesItem? =
+    private fun getCrimesItemById(id: Int): CrimesItem? =
         _allCrimes.value?.find {
             it.id == id
         }
@@ -372,34 +380,4 @@ class CrimeMapFragmentViewModel(
         val newList = mutableListOf<String>()
         _checkedChipsNamesList.value = newList
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

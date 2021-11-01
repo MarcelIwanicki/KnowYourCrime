@@ -6,41 +6,38 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.iwanickimarcel.knowyourcrime.databinding.BottomSheetRowBinding
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItem
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.util.IconFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.CancelableCallback
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.iwanickimarcel.knowyourcrime.databinding.BottomSheetRowBinding
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItem
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.util.IconFactory
 import kotlin.math.roundToInt
 
 
 class BottomSheetAdapter(
     private val dataSet: ArrayList<CrimesItem>,
     private val googleMap: GoogleMap
-) :
-    RecyclerView.Adapter<BottomSheetAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<BottomSheetAdapter.ViewHolder>() {
+
+    companion object {
+        private const val LATITUDE_OFFSET = 0.00005443289f
+        private const val LONGITUDE_OFFSET = 0.00000268221f
+        private const val DEFAULT_CAMERA_ZOOM = 22.0f
+    }
 
     class ViewHolder(bottomSheetRowBinding: BottomSheetRowBinding) :
         RecyclerView.ViewHolder(bottomSheetRowBinding.root) {
         lateinit var crimesItem: CrimesItem
-        val category: TextView
-        val locationType: TextView
-        val month: TextView
-        val gpsDistance: TextView
-        val icon: ImageView
+        val category: TextView = bottomSheetRowBinding.textViewCategory
+        val locationType: TextView = bottomSheetRowBinding.textViewLocationType
+        val month: TextView = bottomSheetRowBinding.textViewMonth
+        val gpsDistance: TextView = bottomSheetRowBinding.textViewDistance
+        val icon: ImageView = bottomSheetRowBinding.imageViewIconBottomSheetRow
 
         lateinit var googleMap: GoogleMap
-
-        init {
-            category = bottomSheetRowBinding.textViewCategory
-            locationType = bottomSheetRowBinding.textViewLocationType
-            month = bottomSheetRowBinding.textViewMonth
-            gpsDistance = bottomSheetRowBinding.textViewDistance
-            icon = bottomSheetRowBinding.imageViewIconBottomSheetRow
-        }
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -64,17 +61,15 @@ class BottomSheetAdapter(
 
         viewHolder.apply {
             itemView.setOnClickListener {
-                val offsetLatSub = 0.00005443289f
-                val offsetLongSub = 0.00000268221f
                 val action =
                     CrimeMapFragmentDirections.actionCrimeMapFragmentToScreenDetailsFragment(
                         crimesItem
                     )
-                val lng = dataSet[position].location.longitude.toDouble() - offsetLongSub
-                val lat = dataSet[position].location.latitude.toDouble() - offsetLatSub
+                val lng = dataSet[position].location.longitude.toDouble() - LONGITUDE_OFFSET
+                val lat = dataSet[position].location.latitude.toDouble() - LATITUDE_OFFSET
 
                 val cameraPosition = CameraPosition.Builder()
-                    .target(LatLng(lat, lng)).zoom(22.0f).build()
+                    .target(LatLng(lat, lng)).zoom(DEFAULT_CAMERA_ZOOM).build()
 
                 googleMap.uiSettings.isScrollGesturesEnabled = false
                 googleMap.animateCamera(

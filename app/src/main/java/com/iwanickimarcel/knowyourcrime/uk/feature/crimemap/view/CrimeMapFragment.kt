@@ -14,15 +14,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iwanickimarcel.knowyourcrime.R
-import com.iwanickimarcel.knowyourcrime.databinding.CrimeMapBinding
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.Crimes
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItem
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItemMarker
-import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.viewmodel.CrimeMapFragmentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -36,6 +31,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.chip.Chip
 import com.google.maps.android.clustering.ClusterManager
+import com.iwanickimarcel.knowyourcrime.R
+import com.iwanickimarcel.knowyourcrime.databinding.CrimeMapBinding
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.Crimes
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItem
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.model.CrimesItemMarker
+import com.iwanickimarcel.knowyourcrime.uk.feature.crimemap.viewmodel.CrimeMapFragmentViewModel
 import kotlinx.coroutines.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
@@ -74,6 +75,8 @@ class CrimeMapFragment : Fragment() {
     ): View {
         _binding = CrimeMapBinding.inflate(inflater, container, false)
 
+        viewModel.initDateFilter()
+
         viewModel.allCrimes.observe(viewLifecycleOwner) {
             setMarkersForCrimes(it)
             setBottomListForCrimes(it)
@@ -84,11 +87,9 @@ class CrimeMapFragment : Fragment() {
         }
 
         viewModel.currentGPSPosition.observe(viewLifecycleOwner) {
-            CoroutineScope(Dispatchers.IO).launch {
+            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 withTimeout(GPS_FETCH_TIMEOUT) {
-                    withContext(Dispatchers.Main) {
-                        setGPSMarker(it)
-                    }
+                    setGPSMarker(it)
                 }
             }
         }
@@ -121,11 +122,9 @@ class CrimeMapFragment : Fragment() {
             maxWaitTime = GPS_FETCH_INTERVAL
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Main) {
-                if (::googleMap.isInitialized) {
-                    locationCallback = viewModel.initLocationCallback(googleMap)
-                }
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            if (::googleMap.isInitialized) {
+                locationCallback = viewModel.initLocationCallback(googleMap)
             }
         }
 
@@ -138,25 +137,23 @@ class CrimeMapFragment : Fragment() {
         gpsMarker = googleMap.addMarker(
             MarkerOptions()
                 .position(latLng)
-                .title("you are here")
+                .title(getString(R.string.you_are_here))
         )
     }
 
     private fun setBottomListForCrimes(crimes: Crimes) {
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Main) {
-                binding.bottomSheet.recyclerViewBottomSheet.apply {
-                    layoutManager = LinearLayoutManager(activity)
-                    bottomSheetAdapter =
-                        BottomSheetAdapter(crimes as ArrayList<CrimesItem>, googleMap)
-                    adapter = bottomSheetAdapter
-                }
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            binding.bottomSheet.recyclerViewBottomSheet.apply {
+                layoutManager = LinearLayoutManager(activity)
+                bottomSheetAdapter =
+                    BottomSheetAdapter(crimes as ArrayList<CrimesItem>, googleMap)
+                adapter = bottomSheetAdapter
             }
         }
     }
 
     private fun setMarkersForCrimes(crimes: Crimes) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
                 clusterManager.clearItems()
             }
@@ -268,14 +265,14 @@ class CrimeMapFragment : Fragment() {
         binding.bottomSheet.sortByDistance.setOnClickListener {
             viewModel.sortListByDistance(binding.bottomSheet.sortByDistance.isChecked)
 
-            bottomSheetAdapter.notifyDataSetChanged()
+            bottomSheetAdapter.notifyItemChanged(0)
             binding.bottomSheet.recyclerViewBottomSheet.smoothScrollToPosition(0)
         }
 
         binding.bottomSheet.sortAlphabetically.setOnClickListener {
             viewModel.sortListAlphabetically(binding.bottomSheet.sortAlphabetically.isChecked)
 
-            bottomSheetAdapter.notifyDataSetChanged()
+            bottomSheetAdapter.notifyItemChanged(0)
             binding.bottomSheet.recyclerViewBottomSheet.smoothScrollToPosition(0)
         }
     }
@@ -310,15 +307,13 @@ class CrimeMapFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
-        CoroutineScope(Dispatchers.IO).launch {
-            withContext(Dispatchers.Main) {
-                if (::locationCallback.isInitialized) {
-                    fusedLocationClient.requestLocationUpdates(
-                        locationRequest,
-                        locationCallback,
-                        Looper.getMainLooper()
-                    )
-                }
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+            if (::locationCallback.isInitialized) {
+                fusedLocationClient.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    Looper.getMainLooper()
+                )
             }
         }
     }
